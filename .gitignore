@@ -1,0 +1,22 @@
+node_modules
+dist
+*.tsbuildinfo
+
+# Variáveis de ambiente: só o .env.example é commitado
+.env
+.env.*
+!.env.example
+
+# Firebase
+.firebase
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# Editor / SO
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+Thumbs.db
+*.log

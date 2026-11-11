@@ -3,6 +3,7 @@ import {
   centavosParaTextoReais,
   formatarKg,
   formatarReais,
+  gramasParaTextoKg,
   kgParaGramas,
   kgParaGramasPermitindoZero,
   reaisParaCentavos,
@@ -98,6 +99,21 @@ describe('centavosParaTextoReais', () => {
     [100000, '1000,00'],
   ])('mostra %i centavos como "%s" para edição', (centavos, texto) => {
     expect(centavosParaTextoReais(centavos)).toBe(texto)
+  })
+})
+
+describe('gramasParaTextoKg', () => {
+  it.each([
+    [5500, '5,5'],
+    [5000, '5'],
+    [1, '0,001'],
+    [12345, '12,345'],
+    [1005, '1,005'],
+    [0, '0'],
+    // Sem separador de milhar: o texto volta para um campo que kgParaGramas precisa aceitar.
+    [1234500, '1234,5'],
+  ])('mostra %i gramas como "%s" para edição', (gramas, texto) => {
+    expect(gramasParaTextoKg(gramas)).toBe(texto)
   })
 })
 

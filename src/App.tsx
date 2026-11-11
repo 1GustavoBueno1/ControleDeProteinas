@@ -1,10 +1,14 @@
+import { useState } from 'react'
 import { useAuth } from './auth/useAuth'
 import { Cabecalho } from './components/Cabecalho'
+import { Navegacao, type Tela } from './components/Navegacao'
+import Dia from './pages/Dia'
 import Login from './pages/Login'
 import Proteinas from './pages/Proteinas'
 
 export default function App() {
   const { estado, sair } = useAuth()
+  const [tela, setTela] = useState<Tela>('dia')
 
   if (estado.status === 'carregando') {
     return (
@@ -38,7 +42,8 @@ export default function App() {
   return (
     <>
       <Cabecalho usuario={estado.usuario} aoSair={sair} />
-      <Proteinas />
+      <Navegacao telaAtual={tela} aoMudar={setTela} />
+      {tela === 'dia' ? <Dia /> : <Proteinas />}
     </>
   )
 }

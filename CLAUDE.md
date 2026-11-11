@@ -95,7 +95,7 @@ Entrada: o usuário digita peso em KG ("5,5") e preço em R$ ("45,90"), com vír
 0. Setup (feito)
 1. Firebase config + Auth (AuthContext, RequireRole, Login) (feito)
 2. Domain + testes (tipos, utils, cálculo de custo, liberação do relatório) (feito)
-3. proteinasService + tela Proteinas
+3. proteinasService + tela Proteinas (feito)
 4. movimentosService + tela Dia
 5. relatorioService + tela Relatorio
 6. firestore.rules (+ testes com emulador, se possível)

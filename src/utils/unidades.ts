@@ -32,6 +32,11 @@ export function centavosParaTextoReais(centavos: number): string {
   return (centavos / 100).toFixed(2).replace('.', ',')
 }
 
+/** Peso para preencher um campo de edição ("5,5"): sem "kg" nem milhar, que kgParaGramas recusa. */
+export function gramasParaTextoKg(gramas: number): string {
+  return String(gramas / 1000).replace('.', ',')
+}
+
 export function formatarKg(gramas: number): string {
   const kg = (gramas / 1000).toLocaleString('pt-BR', {
     minimumFractionDigits: 3,

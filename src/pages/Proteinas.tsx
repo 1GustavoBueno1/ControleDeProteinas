@@ -211,7 +211,7 @@ export default function Proteinas() {
         )}
 
         {proteinas && proteinas.length > 0 && (
-          <ul className="lista-proteinas">
+          <ul className="lista">
             {proteinas.map((proteina) => (
               <ItemProteina
                 key={proteina.id}

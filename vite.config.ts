@@ -6,7 +6,5 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['src/**/*.test.ts'],
-    // Os primeiros testes chegam na Etapa 2; até lá "npm test" não deve falhar por falta deles.
-    passWithNoTests: true,
   },
 })

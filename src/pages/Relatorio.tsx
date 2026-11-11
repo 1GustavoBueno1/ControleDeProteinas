@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '../auth/useAuth'
 import { SeletorDeData } from '../components/SeletorDeData'
 import { movimentosPendentes, podeGerarRelatorio } from '../domain/relatorio'
@@ -14,8 +14,15 @@ function mensagemDe(erro: unknown): string {
 }
 
 function RelatorioGerado({ relatorio }: { relatorio: RelatorioDiario }) {
+  const secao = useRef<HTMLElement>(null)
+
+  // No celular o relatório nasce abaixo da dobra; rola até ele a cada geração.
+  useEffect(() => {
+    secao.current?.scrollIntoView({ block: 'start' })
+  }, [relatorio])
+
   return (
-    <section className="secao" aria-labelledby="titulo-relatorio">
+    <section ref={secao} className="secao relatorio-gerado" aria-labelledby="titulo-relatorio">
       <h2 id="titulo-relatorio">Relatório de {formatarData(relatorio.data)}</h2>
 
       <div className="total-dia">

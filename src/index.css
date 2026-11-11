@@ -32,6 +32,10 @@
   box-sizing: border-box;
 }
 
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   margin: 0;
   background: var(--marinho);
@@ -130,7 +134,12 @@ select {
 
 /* Cabeçalho e navegação */
 
+/* Fica presa no topo ao rolar, para trocar de tela sem voltar ao início da página. */
 .navegacao {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--marinho);
   border-bottom: 1px solid var(--marinho-borda);
 }
 
@@ -151,6 +160,7 @@ select {
   color: var(--gelo-suave);
   font-weight: 600;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .aba[aria-current='page'] {
@@ -202,6 +212,8 @@ select {
   border-radius: var(--raio);
   font-weight: 600;
   cursor: pointer;
+  /* Sem isto o celular espera um possível toque duplo (zoom) antes de acionar o botão. */
+  touch-action: manipulation;
   transition:
     background-color 120ms,
     border-color 120ms;
@@ -251,6 +263,13 @@ select {
   gap: 0.5rem;
 }
 
+/* No celular os botões dividem a largura da linha: alvo maior para o polegar. */
+@media (max-width: 30rem) {
+  .acoes > .botao {
+    flex: 1 1 auto;
+  }
+}
+
 /* Formulários */
 
 .formulario {
@@ -288,6 +307,17 @@ select {
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 0.75rem;
+}
+
+/* No iPhone o campo de data ignora largura e alinhamento sem estes ajustes. */
+.campo input[type='date'] {
+  display: block;
+  min-width: 0;
+  appearance: none;
+}
+
+.campo input[type='date']::-webkit-date-and-time-value {
+  text-align: left;
 }
 
 .campo input::placeholder {
@@ -434,6 +464,11 @@ select {
 .situacao-ok {
   padding-left: 0.8rem;
   border-left: 3px solid var(--verde);
+}
+
+/* Desconta a navegação presa no topo quando a tela rola até o relatório. */
+.relatorio-gerado {
+  scroll-margin-top: 3.75rem;
 }
 
 .total-dia {

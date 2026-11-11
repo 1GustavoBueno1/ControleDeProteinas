@@ -99,6 +99,6 @@ Entrada: o usuário digita peso em KG ("5,5") e preço em R$ ("45,90"), com vír
 3. proteinasService + tela Proteinas (feito)
 4. movimentosService + tela Dia (feito)
 5. relatorioService + tela Relatorio (feito)
-6. firestore.rules (+ testes com emulador, se possível)
+6. firestore.rules (+ testes com emulador, se possível) (feito)
 7. Polimento de UI para celular + firebase.json de Hosting
 8. README (rodar, criar usuários, publicar rules, deploy)

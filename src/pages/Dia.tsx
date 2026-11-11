@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../auth/useAuth'
 import { FormularioPeso } from '../components/FormularioPeso'
 import { FormularioSaida } from '../components/FormularioSaida'
+import { SeletorDeData } from '../components/SeletorDeData'
 import { calcularConsumoGramas } from '../domain/custo'
 import {
   criarMovimento,
@@ -20,7 +21,6 @@ import {
 import { listarProteinasAtivas } from '../services/proteinasService'
 import type { Movimento } from '../types/movimento'
 import type { Proteina } from '../types/proteina'
-import { ehDataValida, formatarData, hojeEmSaoPaulo } from '../utils/data'
 import { formatarKg, formatarReais, gramasParaTextoKg } from '../utils/unidades'
 
 function mensagemDe(erro: unknown): string {
@@ -252,18 +252,16 @@ function MovimentosDoDia({ data, podeEditar, uid }: MovimentosProps) {
   )
 }
 
-export default function Dia() {
+interface Props {
+  data: string
+  aoMudarData: (data: string) => void
+}
+
+export default function Dia({ data, aoMudarData }: Props) {
   const { estado } = useAuth()
-  const hoje = hojeEmSaoPaulo()
-  const [data, setData] = useState(hoje)
 
   if (estado.status !== 'logado') return null
   const podeEditar = estado.usuario.role === 'churras'
-
-  function aoEscolherData(valor: string) {
-    // O campo devolve "" quando é limpo; datas futuras não fazem sentido para lançamento.
-    if (ehDataValida(valor) && valor <= hoje) setData(valor)
-  }
 
   return (
     <main className="pagina">
@@ -277,26 +275,7 @@ export default function Dia() {
         </p>
       </div>
 
-      <div className="secao">
-        <div className="campo">
-          <label htmlFor="data-do-dia">Data</label>
-          <input
-            id="data-do-dia"
-            type="date"
-            value={data}
-            max={hoje}
-            onChange={(e) => aoEscolherData(e.target.value)}
-          />
-        </div>
-        {data !== hoje && (
-          <div className="aviso-atencao">
-            <p>Você está em {formatarData(data)}, não em hoje.</p>
-            <button type="button" className="botao botao-secundario" onClick={() => setData(hoje)}>
-              Voltar para hoje
-            </button>
-          </div>
-        )}
-      </div>
+      <SeletorDeData data={data} aoMudar={aoMudarData} />
 
       <MovimentosDoDia key={data} data={data} podeEditar={podeEditar} uid={estado.usuario.uid} />
     </main>

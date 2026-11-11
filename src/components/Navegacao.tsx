@@ -1,7 +1,8 @@
-export type Tela = 'dia' | 'proteinas'
+export type Tela = 'dia' | 'relatorio' | 'proteinas'
 
 const TELAS: { tela: Tela; rotulo: string }[] = [
   { tela: 'dia', rotulo: 'Dia' },
+  { tela: 'relatorio', rotulo: 'Relatório' },
   { tela: 'proteinas', rotulo: 'Proteínas' },
 ]
 

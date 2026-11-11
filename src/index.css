@@ -424,6 +424,50 @@ select {
   justify-items: start;
 }
 
+/* Relatório */
+
+.pendencias {
+  padding-left: 1.1rem;
+  font-weight: 600;
+}
+
+.situacao-ok {
+  padding-left: 0.8rem;
+  border-left: 3px solid var(--verde);
+}
+
+.total-dia {
+  padding: 1rem;
+  background: var(--marinho-claro);
+  border: 1px solid var(--marinho-borda);
+  border-radius: 0.75rem;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.total-rotulo {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gelo-suave);
+}
+
+.total-valor {
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  color: var(--amarelo);
+}
+
+.preco-rotulo {
+  margin-right: 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--gelo-suave);
+}
+
 /* Login */
 
 .login {

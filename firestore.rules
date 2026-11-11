@@ -1,0 +1,98 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // A role vem sempre de usuarios/{uid}, nunca do cliente.
+    // Sem login, sem documento ou com role desconhecida: sem acesso.
+    function temRole(role) {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/usuarios/$(request.auth.uid))
+        && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.role == role;
+    }
+
+    function ehChurras() {
+      return temRole('churras');
+    }
+
+    function podeLer() {
+      return temRole('adm') || temRole('churras');
+    }
+
+    // Criados à mão no console: o app só lê o próprio documento para descobrir a role.
+    match /usuarios/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /proteinas/{proteinaId} {
+      function proteinaValida() {
+        let dados = request.resource.data;
+        return dados.keys().hasOnly(['nome', 'precoPorKgCentavos', 'ativo', 'criadoEm'])
+          && dados.nome is string && dados.nome.size() > 0
+          && dados.precoPorKgCentavos is int && dados.precoPorKgCentavos > 0
+          && dados.ativo is bool
+          && dados.criadoEm is timestamp;
+      }
+
+      allow read: if podeLer();
+      allow create: if ehChurras() && proteinaValida();
+      allow update: if ehChurras() && proteinaValida()
+        && request.resource.data.criadoEm == resource.data.criadoEm;
+      // Proteína nunca é apagada, só desativada (ativo = false).
+      allow delete: if false;
+    }
+
+    match /dias/{dia}/movimentos/{proteinaId} {
+      function dataValida() {
+        return dia.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$');
+      }
+
+      function camposAlterados() {
+        return request.resource.data.diff(resource.data).affectedKeys();
+      }
+
+      function saidaNova() {
+        let dados = request.resource.data;
+        return dados.keys().hasOnly([
+            'proteinaId', 'nomeSnapshot', 'precoPorKgCentavosSnapshot',
+            'saidaGramas', 'retornoGramas', 'criadoPor'
+          ])
+          // O ID do documento é o proteinaId: uma proteína só entra uma vez por dia.
+          && dados.proteinaId == proteinaId
+          && dados.criadoPor == request.auth.uid
+          && dados.saidaGramas is int && dados.saidaGramas > 0
+          && dados.retornoGramas == null
+          && dados.nomeSnapshot is string && dados.nomeSnapshot.size() > 0
+          && dados.precoPorKgCentavosSnapshot is int && dados.precoPorKgCentavosSnapshot > 0;
+      }
+
+      // (a) Informar ou corrigir o retorno: só retornoGramas muda, entre 0 e a saída.
+      function informaRetorno() {
+        return camposAlterados().hasOnly(['retornoGramas'])
+          && request.resource.data.retornoGramas is int
+          && request.resource.data.retornoGramas >= 0
+          && request.resource.data.retornoGramas <= resource.data.saidaGramas;
+      }
+
+      // (b) Corrigir a saída: só saidaGramas muda, e apenas enquanto o retorno não foi informado.
+      function corrigeSaida() {
+        return camposAlterados().hasOnly(['saidaGramas'])
+          && resource.data.retornoGramas == null
+          && request.resource.data.saidaGramas is int
+          && request.resource.data.saidaGramas > 0;
+      }
+
+      allow read: if podeLer();
+      allow create: if ehChurras() && dataValida() && saidaNova();
+      // Como só retornoGramas ou saidaGramas podem mudar, nome, preço, proteinaId e criadoPor ficam fixos.
+      allow update: if ehChurras() && dataValida() && (informaRetorno() || corrigeSaida());
+      allow delete: if false;
+    }
+
+    // Todo o resto fica fechado.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -10,7 +10,8 @@
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-controle-de-proteinas \"vitest run --config vitest.rules.config.ts\""
   },
   "dependencies": {
     "firebase": "^13.2.0",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@firebase/rules-unit-testing": "^6.0.0",
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
@@ -26,6 +28,7 @@
     "eslint": "^10.14.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
+    "firebase-tools": "^15.35.0",
     "globals": "^17.14.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.2",

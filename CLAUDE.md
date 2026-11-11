@@ -23,6 +23,7 @@ Sistema web de controle diário de proteínas (carnes): quanto de cada carne sai
 - `npm run typecheck`: `tsc -b`
 - `npm run lint`: ESLint
 - `npm test`: Vitest (uma execução)
+- `npm run test:rules`: testes do `firestore.rules` no emulador (precisa de Java; os testes ficam em `tests/rules/`)
 - `npm run build`: typecheck + build de produção
 
 ## Arquitetura

@@ -27,6 +27,11 @@ export function reaisParaCentavos(texto: string): number | null {
   return apenasPositivo(converter(texto, PRECO_EM_REAIS, 100))
 }
 
+/** Preço para preencher um campo de edição ("45,90"): sem "R$" nem milhar, que reaisParaCentavos recusa. */
+export function centavosParaTextoReais(centavos: number): string {
+  return (centavos / 100).toFixed(2).replace('.', ',')
+}
+
 export function formatarKg(gramas: number): string {
   const kg = (gramas / 1000).toLocaleString('pt-BR', {
     minimumFractionDigits: 3,

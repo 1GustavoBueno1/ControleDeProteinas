@@ -83,11 +83,18 @@ Entrada: o usuário digita peso em KG ("5,5") e preço em R$ ("45,90"), com vír
 6. Rodar typecheck, lint, build e os testes da etapa antes de dizer que terminou. Não dizer "funciona" sem ter rodado.
 7. Design: avisar o usuário ANTES de começar qualquer tela, para ele decidir o design.
 
+## Design
+
+- Decisão do usuário: todas as cores vêm da logo da Dudu Bebidas, com fundo escuro (azul-marinho). Única exceção: vermelho discreto, só para erros.
+- As cores ficam em variáveis CSS no topo de `src/index.css` (`--marinho`, `--amarelo`, `--gelo`, `--verde` e tons derivados). Não usar cor fora dessas variáveis.
+- CSS puro em um arquivo só (`src/index.css`), sem biblioteca de UI. Títulos em Playfair Display, texto em Barlow (Google Fonts, com fonte do sistema como reserva).
+- `src/assets/logo-dudu.jpg` e `folha-dudu.jpg` foram recortadas de uma captura de tela; trocar pelo arquivo original da logo quando o usuário enviar.
+
 ## Etapas
 
 0. Setup (feito)
-1. Firebase config + Auth (AuthContext, RequireRole, Login) (feito; Login ainda sem estilo, design a definir pelo usuário)
-2. Domain + testes (tipos, utils, cálculo de custo, liberação do relatório)
+1. Firebase config + Auth (AuthContext, RequireRole, Login) (feito)
+2. Domain + testes (tipos, utils, cálculo de custo, liberação do relatório) (feito)
 3. proteinasService + tela Proteinas
 4. movimentosService + tela Dia
 5. relatorioService + tela Relatorio

@@ -1,36 +1,44 @@
-import { RequireRole } from './auth/RequireRole'
 import { useAuth } from './auth/useAuth'
+import { Cabecalho } from './components/Cabecalho'
 import Login from './pages/Login'
+import Proteinas from './pages/Proteinas'
 
 export default function App() {
   const { estado, sair } = useAuth()
 
-  if (estado.status === 'carregando') return <p>Carregando...</p>
-  if (estado.status === 'deslogado') return <Login />
-
-  if (estado.status === 'semAcesso') {
+  if (estado.status === 'carregando') {
     return (
-      <main>
-        <h1>Sem acesso</h1>
-        <p>
-          {estado.email}: {estado.motivo}
-        </p>
-        <button onClick={sair}>Sair</button>
+      <main className="tela-central">
+        <p className="texto-suave">Carregando...</p>
       </main>
     )
   }
 
-  // Placeholder da Etapa 1: as telas reais entram a partir da Etapa 3.
+  if (estado.status === 'deslogado') return <Login />
+
+  if (estado.status === 'semAcesso') {
+    return (
+      <main className="tela-central">
+        <div className="login">
+          <div className="titulo-pagina">
+            <h1>Sem acesso</h1>
+            <span className="tracos" aria-hidden="true" />
+          </div>
+          <p>
+            {estado.email}: {estado.motivo}
+          </p>
+          <button type="button" className="botao botao-secundario" onClick={() => void sair()}>
+            Sair
+          </button>
+        </div>
+      </main>
+    )
+  }
+
   return (
-    <main>
-      <h1>Controle de Proteínas</h1>
-      <p>
-        Logado como {estado.usuario.email} (role: {estado.usuario.role})
-      </p>
-      <RequireRole roles={['churras']} fallback={<p>Seu perfil apenas visualiza.</p>}>
-        <p>Seu perfil pode cadastrar proteínas e lançar movimentos.</p>
-      </RequireRole>
-      <button onClick={sair}>Sair</button>
-    </main>
+    <>
+      <Cabecalho usuario={estado.usuario} aoSair={sair} />
+      <Proteinas />
+    </>
   )
 }

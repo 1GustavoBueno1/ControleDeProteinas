@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  centavosParaTextoReais,
   formatarKg,
   formatarReais,
   kgParaGramas,
@@ -85,6 +86,18 @@ describe('reaisParaCentavos', () => {
     ['dois separadores', '1.045,90'],
   ])('recusa %s', (_caso, texto) => {
     expect(reaisParaCentavos(texto)).toBeNull()
+  })
+})
+
+describe('centavosParaTextoReais', () => {
+  it.each([
+    [4590, '45,90'],
+    [4500, '45,00'],
+    [5, '0,05'],
+    // Sem separador de milhar: o texto volta para um campo que reaisParaCentavos precisa aceitar.
+    [100000, '1000,00'],
+  ])('mostra %i centavos como "%s" para edição', (centavos, texto) => {
+    expect(centavosParaTextoReais(centavos)).toBe(texto)
   })
 })
 
